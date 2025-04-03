@@ -1,0 +1,127 @@
+[tool.poetry]
+name = "django-template"
+version = "0.1.0"
+description = "Django template"
+authors = ["Damir Kambarov <kam.damir@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "~5.2"
+djangorestframework = "^3.15.2"
+psycopg = {version = "^3.2.5", extras = ["binary"]}
+djangorestframework-simplejwt = "^5.4.0"
+python-dotenv = "^1.0.1"
+drf-spectacular = "^0.28.0"
+django-filter = "^25.1"
+django-split-settings = "^1.3.2"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.5.0"
+isort = "^6.0.0"
+wemake-python-styleguide = "0.18.0"
+flake8 = "^7.0.0"
+flake8-html = "^0.4.3"
+autoflake = "^2.3.1"
+pyproject-flake8 = "^7.0.0"
+black = "^25.1.0"
+ruff = "^0.9.6"
+django-debug-toolbar = "^5.0.1"
+
+[tool.black]
+line-length = 120
+target-version = ["py311"]
+exclude = """
+(
+    .venv
+    | flake-report
+    | venv
+    | migrations
+    | tests
+)
+"""
+
+[tool.isort]
+profile = "wemake"
+default_section = "THIRDPARTY"
+known_first_party = ["base", "users", "api", "config"]
+skip_glob = ["**/__pycache__", ".venv", "flake-report", "venv", "**/migrations", "**/tests"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+line_length = 120
+
+[tool.autoflake]
+imports = ["django", "djangorestframework"]
+
+[tool.flake8]
+inline-quotes = "\""
+format = "wemake"
+show-source = true
+statistics = "false"
+doctests = true
+select = "C,E,F,W,B,B950"
+ignore = """
+C812,C815,C816,C408,C901,\
+W503,\
+WPS100,WPS110,WPS114,WPS115,\
+WPS201,WPS202,WPS203,WPS210,WPS211,WPS213,WPS214,WPS215,WPS216,WPS219,WPS220,WPS221,WPS222,WPS226,WPS230,WPS231,WPS234,WPS235,WPS237,\
+WPS305,WPS306,WPS318,WPS319,WPS320,WPS323,WPS332,WPS337,WPS347,WPS348,\
+WPS400,WPS402,WPS404,WPS407,WPS410,WPS412,WPS421,WPS425,WPS430,WPS431,WPS432,WPS442,WPS462,WPS463,\
+WPS501,WPS503,WPS510,WPS529,\
+WPS601,WPS602,WPS615
+"""
+max-try-body-length = 5
+max-line-length = 120
+strictness = "long"
+docstring-style = "numpy"
+exclude = ["**/__pycache__", ".venv", "**/tests/**", "flake-report", "venv", "**/migrations/**"]
+min-name-length = 1
+per-file-ignores = [
+    "app/manage.py:WPS326,WPS433",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+fix = true
+force-exclude = true
+
+extend-exclude = [
+    "tests",
+    "docker",
+    "**/migrations/*",
+    "__pycache",
+    ".pre-commit-config.yaml",
+    ".env.example",
+    "*.yml",
+    ".gitignore"
+]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ruff.lint]
+select = [
+    "F",        # pyflakes
+    "E", "W",   # pycodestyle
+    "C90",      # mccabe
+    "ERA",      # eradicate
+    "N",        # pep8-naming
+    "B",        # flake8-bugbear
+    "T20",      # flake8-print
+    "RET",      # flake8-return
+    "TCH",      # flake8-type-checking
+]
+
+fixable = [
+    "A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN",
+    "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN",
+    "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET",
+    "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"
+]
+
+# disable autofix for some possibly-unsafe rules
+unfixable = ["B", "SIM", "TRY", "RUF"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
